@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Software Architecture & UML – Online Quiz</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 24px; background: #f5f7fa; }
+    h1 { text-align: center; margin-bottom: 6px; }
+    .meta { text-align:center; color:#555; margin-bottom:20px; }
+    .question { background: #fff; padding: 16px; margin-bottom: 14px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .question h3 { margin: 0 0 8px 0; font-size: 16px; }
+    label { display:block; margin: 6px 0; cursor:pointer; }
+    button { padding: 12px 22px; font-size: 16px; border:0; border-radius:6px; background:#2563eb; color:#fff; cursor:pointer; }
+    button:hover { background:#1e40af; }
+    #result { font-size: 18px; font-weight: 600; margin-top: 20px; }
+    .footer { margin-top:30px; color:#666; font-size:14px; text-align:center; }
+  </style>
+</head>
+<body>
+
+<h1>Software Architecture & UML – Online Quiz</h1>
+<div class="meta">50 Questions • Auto‑graded • No login required</div>
+
+<form id="quizForm"></form>
+
+<button type="button" onclick="submitQuiz()">Submit Quiz</button>
+<p id="result"></p>
+
+<script>
+const quizData = [
+// -------- Section A: MCQs (1–20) --------
+{q:"Who introduced the 4+1 View Model of software architecture?", o:["Grady Booch","Philippe Kruchten","Martin Fowler","Robert C. Martin"], a:1},
+{q:"Which view of the 4+1 model is the 'plus one' that ties the others together?", o:["Logical View","Development View","Scenarios / Use Cases","Process View"], a:2},
+{q:"In the MVC pattern, which component is responsible for the User Interface?", o:["Model","View","Controller","Service"], a:1},
+{q:"Which UML diagram is classified as a Structural diagram?", o:["Sequence Diagram","Activity Diagram","Class Diagram","State Diagram"], a:2},
+{q:"A 'Has‑a' relationship where the child cannot exist without the parent is called:", o:["Association","Aggregation","Composition","Inheritance"], a:2},
+{q:"Which architectural pattern involves a Broker to coordinate communication between clients and servers?", o:["Client–Server","Layered","Broker","Pipe‑and‑Filter"], a:2},
+{q:"The symbol '#' in a UML class diagram represents which visibility?", o:["Public","Private","Protected","Package"], a:2},
+{q:"Which diagram shows the physical hardware nodes and the software components running on them?", o:["Component Diagram","Deployment Diagram","Class Diagram","Object Diagram"], a:1},
+{q:"In a Sequence Diagram, what does the vertical dashed line represent?", o:["Message","Object lifetime (lifeline)","Activation","Dependency"], a:1},
+{q:"The Process View in the 4+1 model primarily addresses which quality attribute?", o:["Maintainability","Performance & concurrency","Usability","Reusability"], a:1},
+{q:"Which architecture pattern is best suited for high‑performance stream processing?", o:["Layered","Pipe‑and‑Filter","Client–Server","MVC"], a:1},
+{q:"In UML, a hollow arrow pointing from a child class to a parent class represents:", o:["Association","Aggregation","Generalization (Inheritance)","Dependency"], a:2},
+{q:"Which component of MVC handles user input and updates the Model?", o:["View","Controller","Model","Router"], a:1},
+{q:"What is the main goal of the Development View in the 4+1 model?", o:["End‑user functionality","Source code organization","Runtime behavior","Deployment topology"], a:1},
+{q:"Which diagram models all possible behaviors of an object throughout its life cycle?", o:["Activity Diagram","Sequence Diagram","State Diagram","Use Case Diagram"], a:2},
+{q:"A system that separates core functionality from plug‑in modules uses which pattern?", o:["Microservices","Microkernel","Layered","Broker"], a:1},
+{q:"Which UML diagram uses Swimlanes to represent responsibilities of actors or departments?", o:["Sequence Diagram","Class Diagram","Activity Diagram","State Diagram"], a:2},
+{q:"The Object Management Group (OMG) maintains which standard?", o:["Java","UML","IEEE 830","ISO 9001"], a:1},
+{q:"In the 4+1 View Model, a Scenario primarily represents:", o:["Code structure","Hardware layout","A use case or interaction","Data model"], a:2},
+{q:"Which relationship is represented by a hollow diamond?", o:["Composition","Inheritance","Aggregation","Dependency"], a:2},
+
+// -------- Section B: True / False (21–35) --------
+{q:"UML is a programming language used to execute software.", o:["True","False"], a:1},
+{q:"In MVC, the Model should directly update View UI components.", o:["True","False"], a:1},
+{q:"A Use Case diagram shows how a system performs tasks internally.", o:["True","False"], a:1},
+{q:"The Physical View of the 4+1 model focuses on performance and system integrators.", o:["True","False"], a:1},
+{q:"In a Sequence Diagram, the horizontal axis represents time.", o:["True","False"], a:1},
+{q:"Microservices allow different services to use different programming languages.", o:["True","False"], a:0},
+{q:"Multiplicity shows how many instances of one class relate to another.", o:["True","False"], a:0},
+{q:"Communication diagrams convey the same information as Sequence diagrams.", o:["True","False"], a:0},
+{q:"Layered architecture commonly includes Presentation, Business, Persistence, and Database layers.", o:["True","False"], a:0},
+{q:"An Actor in a Use Case diagram must be a human user.", o:["True","False"], a:1},
+{q:"The Logical View focuses on functional requirements.", o:["True","False"], a:0},
+{q:"Private class members are marked with '+' in UML.", o:["True","False"], a:1},
+{q:"State diagrams model the behavior of a single object over time.", o:["True","False"], a:0},
+{q:"Deployment diagrams are behavioral diagrams.", o:["True","False"], a:1},
+{q:"Software architecture is high‑level design, while software design is low‑level.", o:["True","False"], a:0},
+
+// -------- Section C: Matching as MCQs (36–50) --------
+{q:"Master–Slave architecture refers to:", o:["Peer equality","Event notification","Leader with worker components","Layer separation"], a:2},
+{q:"Peer‑to‑Peer architecture means:", o:["Central server control","Components act as both clients and servers","Strict layering","Broker mediation"], a:1},
+{q:"Event‑Driven architecture is characterized by:", o:["Synchronous calls","Shared database","Reaction to events","Pipe stages"], a:2},
+{q:"Logical View in 4+1 describes:", o:["Hardware nodes","Runtime processes","Classes and packages","Use cases"], a:2},
+{q:"Process View mainly deals with:", o:["Source code","Concurrency and performance","UI design","Deployment"], a:1},
+{q:"In UML, a stick figure represents:", o:["Class","Actor","Component","Node"], a:1},
+{q:"A solid line with an arrow in UML usually indicates:", o:["Dependency","Inheritance","Association/message direction","Aggregation"], a:2},
+{q:"A dashed line with an arrow represents:", o:["Association","Dependency","Composition","Generalization"], a:1},
+{q:"A box with three compartments represents:", o:["Component","Package","Class","Node"], a:2},
+{q:"A filled or hollow circle in a State Diagram denotes:", o:["Decision","Initial or final state","Transition","Activity"], a:1},
+{q:"In MVC, the Model contains:", o:["UI logic","Business logic and data","Input handling","Routing"], a:1},
+{q:"In MVC, the View is responsible for:", o:["Business rules","User input","Displaying data","Persistence"], a:2},
+{q:"In MVC, the Controller primarily:", o:["Stores data","Coordinates Model and View","Renders UI","Persists objects"], a:1},
+{q:"The 4+1 View Model is best described as:", o:["A coding standard","A deployment framework","An architectural description framework","A UML diagram"], a:2},
+{q:"UML stands for:", o:["Unified Modeling Language","Universal Markup Language","User Modeling Language","Unified Method Library"], a:0},
+];
+
+const form = document.getElementById('quizForm');
+quizData.forEach((item, index) => {
+  const div = document.createElement('div');
+  div.className = 'question';
+  div.innerHTML = `<h3>Q${index + 1}. ${item.q}</h3>` +
+    item.o.map((opt, i) =>
+      `<label><input type="radio" name="q${index}" value="${i}" /> ${opt}</label>`
+    ).join('');
+  form.appendChild(div);
+});
+
+function submitQuiz() {
+  let score = 0;
+  quizData.forEach((item, index) => {
+    const sel = document.querySelector(`input[name=q${index}]:checked`);
+    if (sel && Number(sel.value) === item.a) score++;
+  });
+  document.getElementById('result').innerText = `Your Score: ${score} / ${quizData.length}`;
+}
+</script>
+
+<div class="footer">© Department of Computer Science • Software Architecture</div>
+</body>
+</html>
